@@ -1,0 +1,12 @@
+[
+  { "clienteId": 1, "monto": 25000, "plazoMeses": 12, "ingresosMensuales": 10000, "sucursalId": 1, "empleadoId": 1, "destino": "Casa" },
+  { "clienteId": 2, "monto": 40000, "plazoMeses": 24, "ingresosMensuales": 30000, "sucursalId": 1, "empleadoId": 2, "destino": "Oficina" },
+  { "clienteId": 3, "monto": 15000, "plazoMeses": 6,  "ingresosMensuales": 60000, "sucursalId": 2, "empleadoId": 3, "destino": "Casa" },
+  { "clienteId": 4, "monto": 30000, "plazoMeses": 18, "ingresosMensuales": 15000, "sucursalId": 2, "empleadoId": 4, "destino": "Oficina" },
+  { "clienteId": 5, "monto": 10000, "plazoMeses": 9,  "ingresosMensuales": 20000, "sucursalId": 3, "empleadoId": 5, "destino": "Casa" },
+  { "clienteId": 6, "monto": 8000,  "plazoMeses": 6,  "ingresosMensuales": 50000, "sucursalId": 3, "empleadoId": 6, "destino": "Oficina" },
+  { "clienteId": 7, "monto": 50000, "plazoMeses": 24, "ingresosMensuales": 10000, "sucursalId": 1, "empleadoId": 7, "destino": "Casa" },
+  { "clienteId": 8, "monto": 20000, "plazoMeses": 12, "ingresosMensuales": 15000, "sucursalId": 2, "empleadoId": 8, "destino": "Oficina" },
+  { "clienteId": 9, "monto": 12000, "plazoMeses": 8,  "ingresosMensuales": 0, "sucursalId": 3, "empleadoId": 9, "destino": "Casa" },
+  { "clienteId": 10,"monto": 60000, "plazoMeses": 36, "ingresosMensuales": 70000, "sucursalId": 1, "empleadoId": 10,"destino": "Oficina" }
+]

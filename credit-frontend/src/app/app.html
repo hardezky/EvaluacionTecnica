@@ -1,0 +1,34 @@
+@if (auth.isLoggedIn()) {
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 mb-4">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+          Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/solicitudes/nueva" routerLinkActive="active">
+          Capturar solicitud
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/solicitudes/lista" routerLinkActive="active">
+          Solicitudes
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/solicitudes/lote" routerLinkActive="active">
+          Solicitudes Lote
+        </a>
+      </li>
+    </ul>
+
+
+    <span class="text-light me-3">👤 {{ userName }}</span>
+    <button class="btn btn-outline-light" (click)="logout()">Salir</button>
+  </nav>
+}
+
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,112 @@
+{
+  "clienteId": 1,
+  "sucursalId": 1,
+  "monto": 85000,
+  "plazoMeses": 24,
+  "ingresosMensuales": 25000,
+  "destino": "Compra de maquinaria"
+}
+
+ingresos altos, monto bajo (APROBADO)
+{
+  "monto": 20000,
+  "plazoMeses": 12,
+  "ingresosMensuales": 10000,
+  "idCliente": 1,
+  "idSucursal": 1
+}
+
+
+Monto medio, ingresos moderados, plazo corto (APROBADO)
+{
+  "monto": 80000,
+  "plazoMeses": 18,
+  "ingresosMensuales": 30000,
+  "idCliente": 2,
+  "idSucursal": 2
+}
+
+Monto alto, ingresos suficientes (APROBADO)
+{
+  "monto": 150000,
+  "plazoMeses": 24,
+  "ingresosMensuales": 60000,
+  "idCliente": 3,
+  "idSucursal": 3
+}
+
+
+Monto alto, ingresos bajos (RECHAZADO)
+{
+  "monto": 200000,
+  "plazoMeses": 24,
+  "ingresosMensuales": 15000,
+  "idCliente": 4,
+  "idSucursal": 1
+}
+
+
+Monto pequeño, plazo largo (APROBADO)
+{
+  "monto": 30000,
+  "plazoMeses": 36,
+  "ingresosMensuales": 20000,
+  "idCliente": 5,
+  "idSucursal": 2
+}
+
+Monto grande, plazo muy largo (RECHAZADO)
+{
+  "monto": 300000,
+  "plazoMeses": 60,
+  "ingresosMensuales": 50000,
+  "idCliente": 6,
+  "idSucursal": 3
+}
+
+Monto medio, ingresos bajos (RECHAZADO)
+{
+  "monto": 80000,
+  "plazoMeses": 24,
+  "ingresosMensuales": 10000,
+  "idCliente": 7,
+  "idSucursal": 1
+}
+
+
+Monto bajo, ingresos medianos, plazo corto (APROBADO)
+{
+  "monto": 40000,
+  "plazoMeses": 6,
+  "ingresosMensuales": 15000,
+  "idCliente": 8,
+  "idSucursal": 2
+}
+
+Ingresos nulos (RECHAZADO)
+{
+  "monto": 10000,
+  "plazoMeses": 6,
+  "ingresosMensuales": 0,
+  "idCliente": 9,
+  "idSucursal": 3
+}
+
+
+Monto muy alto, ingresos moderados, plazo medio (RECHAZADO)
+{
+  "monto": 500000,
+  "plazoMeses": 36,
+  "ingresosMensuales": 70000,
+  "idCliente": 10,
+  "idSucursal": 1
+}
+
+
+mockMvc.perform(post("/api/solicitudes/crear")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"monto\":20000, \"plazoMeses\":12, \"ingresosMensuales\":10000, \"idCliente\":1, \"idSucursal\":1}")
+        .header("Authorization", "Bearer " + token))
+    .andExpect(status().isOk())
+    .andExpect(jsonPath("$.decision").value("APROBADO"))
+    .andExpect(jsonPath("$.motivo").value("Score suficiente"));

@@ -1,0 +1,22 @@
+<div class="container mt-5 text-center" *ngIf="decision; else noData">
+  <h2>Resultado de la Solicitud #{{ decision.solicitudId }}</h2>
+
+  @if (decision.decision === 'APROBADO') {
+    <h3 class="text-success">{{ decision.decision }}</h3>
+  }
+  @else {
+    <h3 class="text-danger">{{ decision.decision }}</h3>
+  }
+
+  <p class="mt-3">{{ decision.motivo }}</p>
+
+  <div class="mt-4">
+    <strong>Score:</strong> {{ decision.score }}
+  </div>
+</div>
+
+<ng-template #noData>
+  <div class="alert alert-warning mt-5">
+    No hay información de solicitud para mostrar.
+  </div>
+</ng-template>

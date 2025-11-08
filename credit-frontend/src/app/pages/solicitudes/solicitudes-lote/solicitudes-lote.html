@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h2>Procesar Lote de Solicitudes</h2>
+  <p>Haz clic para procesar 10 solicitudes de prueba desde un archivo JSON.</p>
+
+  <button class="btn btn-primary" (click)="procesarLote()" [disabled]="cargando">
+    {{ cargando ? 'Procesando...' : 'Procesar Lote' }}
+  </button>
+
+  <table *ngIf="resultados.length" class="table mt-4 table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Score</th>
+        <th>Decisión</th>
+        <th>Motivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of resultados; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ r.score }}</td>
+        <td>
+          <span
+            [ngClass]="{
+              'text-success fw-bold': r.decision === 'APROBADA',
+              'text-danger fw-bold': r.decision === 'RECHAZADA'
+            }"
+          >
+            {{ r.decision }}
+          </span>
+        </td>
+        <td>{{ r.motivo }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

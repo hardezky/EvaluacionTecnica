@@ -1,0 +1,106 @@
+version: '3.9'
+
+services:
+
+  # --- Base de datos MySQL ---
+  bd:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: credit_app
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - credit_app-networks
+
+  # --- Eureka Server ---
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - credit_app-networks
+
+  # --- API Gateway ---
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    networks:
+      - credit_app-networks
+
+  # --- Auth Microservice ---
+  auth-ms:
+    build: ./auth-ms
+    container_name: auth-ms
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka-server
+      - bd
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    networks:
+      - credit_app-networks
+
+  # --- Clientes Microservice ---
+  clientes-ms:
+    build: ./clientes-ms
+    container_name: clientes-ms
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+      - bd
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    networks:
+      - credit_app-networks
+
+  # --- Solicitudes Microservice ---
+  solicitudes-ms:
+    build: ./solicitudes-ms
+    container_name: solicitudes-ms
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+      - bd
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    networks:
+      - credit_app-networks
+
+  # --- Frontend Angular ---
+  credit-frontend:
+    build: ./credit-frontend
+    container_name: angular-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - credit_app-networks
+
+networks:
+  credit_app-networks:
+    driver: bridge

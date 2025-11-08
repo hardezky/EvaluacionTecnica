@@ -1,0 +1,33 @@
+<h2>Capturar solicitud</h2>
+
+<div>
+  <label>ID Cliente:</label>
+  <input [(ngModel)]="clienteIdBusqueda" name="clienteIdBusqueda" />
+  <button (click)="buscarCliente()">Buscar</button>
+</div>
+@if (cliente) {
+<div>
+  <h3>Cliente encontrado</h3>
+  <p>Nombre:{{ cliente.nombre }}</p>
+  <!-- agrega más datos si quieres -->
+</div>
+
+<form (ngSubmit)="crear()">
+  <div>
+    <label>Monto:</label>
+    <input type="number" [(ngModel)]="monto" name="monto" required />
+  </div>
+
+  <div>
+    <label>Plazo (meses):</label>
+    <input type="number" [(ngModel)]="plazoMeses" name="plazoMeses" required />
+  </div>
+
+  <div>
+    <label>Ingresos mensuales:</label>
+    <input type="number" [(ngModel)]="ingresosMensuales" name="ingresosMensuales" required />
+  </div>
+
+  <button type="submit">Guardar solicitud</button>
+</form>
+}
