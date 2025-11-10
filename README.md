@@ -204,6 +204,14 @@ Si prefieres ejecutar cada componente manualmente:
 		  Los inserts de prueba incluyen un usuario que no tiene encriptada la contraseña
 		  Contraseña de pruebas: admin123
 
+	NOTA 2: Si al entrar al front y hacer clic en el botón Entrar en consola del navegador se muestra el mensaje de error: POST http://localhost:8080/api/auth/login net::ERR_EMPTY_RESPONSE 
+			deberá ejecutar el siguiente comando:
+			docker restart api-gateway
+
+			esto debido a que las rutas no se registaron en el api-gateway porque los servicios levantaron despues
+
+			
+
 ---
 
 ## Autor
