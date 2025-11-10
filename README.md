@@ -59,11 +59,12 @@ Asegúrate de tener instaladas las siguientes herramientas:
 
 Los scripts SQL se encuentran en la carpeta `/bd`.
 
+Se copian en automático al momento de crear la imágen de mysql, y cuando se ejecuta el docker-compose se crea el contenedor de mysql con la base de datos y tablas creadas, asi como la data
 Debes ejecutarlos **en el siguiente orden**:
 
-`schema_db.sql` → crea el esquema y las tablas principales (`clientes`, `empleados`, `solicitudes`, `sucursales`).  
-`store_procedure.sql` → crea el procedimiento almacenado principal `sp_valida_credito`.  
-`inserts.sql` → inserta datos iniciales para pruebas (clientes, empleados, sucursales, etc).
+`01-schema_db.sql` → crea el esquema y las tablas principales (`clientes`, `empleados`, `solicitudes`, `sucursales`).  
+`02-store_procedure.sql` → crea el procedimiento almacenado principal `sp_valida_credito`.  
+`03-inserts.sql` → inserta datos iniciales para pruebas (clientes, empleados, sucursales, etc).
 
 ### Funcionalidad del Store Procedure
 
@@ -102,6 +103,9 @@ Esto levantará los siguientes contenedores:
 
 Una vez desplegado, accede al frontend en:
 **http://localhost:4200**
+
+usuario de prueba: admin
+contraseña de prueba: admin123
 
 ---
 
