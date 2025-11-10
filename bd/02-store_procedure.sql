@@ -1,5 +1,9 @@
+USE credit_app;
+
 DELIMITER $$
+
 DROP PROCEDURE IF EXISTS sp_calcular_decision$$
+
 CREATE PROCEDURE sp_calcular_decision(
     IN p_monto DECIMAL(15,2),
     IN p_plazo INT,
@@ -46,3 +50,6 @@ BEGIN
     ELSE
         SET p_decision = 'RECHAZADO';
     END IF;
+END$$
+
+DELIMITER ;

@@ -3,8 +3,8 @@ version: '3.9'
 services:
 
   # --- Base de datos MySQL ---
-  bd:
-    image: mysql:8
+  mysql-db:
+    build: ./bd
     container_name: mysql-db
     restart: always
     environment:
@@ -14,6 +14,10 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
     networks:
       - credit_app-networks
 
@@ -33,7 +37,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-server
+      eureka-server:
+        condition: service_started
+      mysql-db:
+        condition: service_healthy
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     networks:
@@ -46,13 +53,16 @@ services:
     ports:
       - "8083:8083"
     depends_on:
-      - eureka-server
-      - bd
+        eureka-server:
+          condition: service_started
+        mysql-db:
+          condition: service_healthy
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/credit_app?createDatabaseIfNoExist=true&useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - credit_app-networks
 
@@ -63,13 +73,16 @@ services:
     ports:
       - "8082:8082"
     depends_on:
-      - eureka-server
-      - bd
+        eureka-server:
+          condition: service_started
+        mysql-db:
+          condition: service_healthy
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - credit_app-networks
 
@@ -80,13 +93,16 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - eureka-server
-      - bd
+        eureka-server:
+          condition: service_started
+        mysql-db:
+          condition: service_healthy
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:mysql://bd:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/credit_app?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_PROFILES_ACTIVE=docker
     networks:
       - credit_app-networks
 
@@ -97,7 +113,8 @@ services:
     ports:
       - "4200:80"
     depends_on:
-      - api-gateway
+      api-gateway:
+        condition: service_started
     networks:
       - credit_app-networks
 

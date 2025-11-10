@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,10 @@ import org.springframework.stereotype.Component;
 public class JWTUtil {
 
 
-    private static final String SECRET_KEY = "verySecretKeyChangeMe1234567890verySecretKeyChangeMe1234567890";
+    //private static final String SECRET_KEY = "verySecretKeyChangeMe1234567890verySecretKeyChangeMe1234567890";
+
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     private Key getSigningKey() {
         // Convierte la clave a un objeto Key válido

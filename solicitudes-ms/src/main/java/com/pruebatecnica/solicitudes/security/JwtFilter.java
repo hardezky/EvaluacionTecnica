@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${auth.service.url}")
+    private String authServiceUrl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -37,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 // Llamar al auth-ms para validar
                 ResponseEntity<Map> validationResponse = restTemplate.getForEntity(
-                        "http://localhost:8083/api/auth/validate?token=" + token, Map.class);
+                        authServiceUrl + "/api/auth/validate?token=" + token, Map.class);
 
                 Map body = validationResponse.getBody();
                 boolean valid = (boolean) body.get("valid");
