@@ -30,22 +30,6 @@ services:
     networks:
       - credit_app-networks
 
-  # --- API Gateway ---
-  api-gateway:
-    build: ./api-gateway
-    container_name: api-gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      eureka-server:
-        condition: service_started
-      mysql-db:
-        condition: service_healthy
-    environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-    networks:
-      - credit_app-networks
-
   # --- Auth Microservice ---
   auth-ms:
     build: ./auth-ms
@@ -63,6 +47,11 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
       - SPRING_PROFILES_ACTIVE=docker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - credit_app-networks
 
@@ -83,6 +72,11 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
       - SPRING_PROFILES_ACTIVE=docker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - credit_app-networks
 
@@ -103,6 +97,35 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
       - SPRING_PROFILES_ACTIVE=docker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - credit_app-networks
+
+
+ # --- API Gateway ---
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      eureka-server:
+        condition: service_started
+      mysql-db:
+        condition: service_healthy
+      auth-ms:
+        condition: service_started
+      clientes-ms:
+        condition: service_started
+      solicitudes-ms:
+        condition: service_started
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     networks:
       - credit_app-networks
 

@@ -7,35 +7,32 @@ spring:
 
   cloud:
     gateway:
-      server:
-        webflux:
-          discovery:
-            locator:
-              enabled: true
-              lower-case-service-id: true
-          default-filters:
-            - PreserveHostHeader
-            - RemoveRequestHeader=Cookie
-          globalcors:
-            add-to-simple-url-handler-mapping: true
-            cors-configurations:
-              '[/**]':
-                allowedOrigins: "*"
-                allowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
-                allowedHeaders: [Authorization, Content-Type]
-          routes:
-            - id: clientes-ms
-              uri: lb://clientes-ms
-              predicates:
-                - Path=/api/clientes/**
-            - id: solicitudes-ms
-              uri: lb://solicitudes-ms
-              predicates:
-                - Path=/api/solicitudes/**
-            - id: auth-ms
-              uri: lb://auth-ms
-              predicates:
-                - Path=/api/auth/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      default-filters:
+        - PreserveHostHeader
+        - RemoveRequestHeader=Cookie
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: [GET, POST, PUT, DELETE, OPTIONS]
+            allowedHeaders: [Authorization, Content-Type]
+      routes:
+        - id: auth-ms
+          uri: lb://auth-ms
+          predicates:
+            - Path=/api/auth/**
+        - id: clientes-ms
+          uri: lb://clientes-ms
+          predicates:
+            - Path=/api/clientes/**
+        - id: solicitudes-ms
+          uri: lb://solicitudes-ms
+          predicates:
+            - Path=/api/solicitudes/**
 
 eureka:
   client:
@@ -43,4 +40,4 @@ eureka:
       defaultZone: http://eureka-server:8761/eureka/
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${spring.application.name}:${server.port}
